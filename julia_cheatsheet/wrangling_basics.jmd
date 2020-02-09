@@ -3,7 +3,7 @@ title : Julia Basics For Data Wrangling and Computational Modeling
 author : Christopher R. Dishop
 ---
 
-Not a comprehensive list and the sequence in this document does not mimic an actual data analysis or simulation. Rather, this document demonstrates common commands that I use.
+Common commands that I use for data analysis and simulation.
 
 First, libraries and a data frame.
 
