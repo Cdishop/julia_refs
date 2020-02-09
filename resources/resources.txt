@@ -1,0 +1,48 @@
+# excellent all around
+
+https://en.wikibooks.org/wiki/Introducing_Julia/Arrays_and_tuples
+https://www.softcover.io/read/7b8eb7d0/juliabook/basics
+
+# julia markdown
+
+https://docs.julialang.org/en/v1/stdlib/Markdown/
+
+
+https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet
+
+# other
+
+
+http://pages.stat.wisc.edu/~bates/JuliaForRProgrammers.pdf
+
+https://julialang.org/learning/
+
+https://julia.quantecon.org/_downloads/pdf/quantitative_economics_with_julia.pdf
+
+https://syl1.gitbook.io/julia-language-a-concise-tutorial/useful-packages/dataframes
+
+https://en.wikibooks.org/wiki/Introducing_Julia/DataFrames
+
+https://www.softcover.io/read/7b8eb7d0/juliabook/montecarlo
+
+https://www.youtube.com/watch?v=sE67bP2PnOo
+
+https://github.com/JuliaData
+
+https://www.reddit.com/r/Julia/comments/e6pspx/a_collection_of_julia_links_and_resources/
+
+https://github.com/JuliaStats/Distributions.jl/blob/master/src/univariate/continuous/pareto.jl
+
+https://people.smp.uq.edu.au/YoniNazarathy/julia-stats/StatisticsWithJulia.pdf
+
+# data frames
+https://github.com/bkamins/Julia-DataFrames-Tutorial/
+
+# data frames compared to dplyr
+https://cbrownley.wordpress.com/2017/11/29/data-wrangling-in-julia-based-on-dplyr-flights-tutorials/
+
+# embed R code
+https://github.com/JuliaInterop/RCall.jl
+
+# embed julia code in R
+https://non-contradiction.github.io/JuliaCall/articles/mandelbrot.html

@@ -1,0 +1,756 @@
+---
+title : Julia Basics For Data Wrangling and Computational Modeling
+author : Christopher R. Dishop
+---
+
+Not a comprehensive list and the sequence in this document does not mimic an actual data analysis or simulation. Rather, this document demonstrates common commands that I use.
+
+First, libraries and a data frame.
+
+```julia
+using DataFrames, DataFramesMeta, Query, Statistics, CSV, CSVFiles, Distributions, Random, PrettyTables
+
+df = DataFrame(
+  name = ["josh", "adam", "jenny", "rory", "thomas", "bill", "sarah", "allie", "shannon", "cloe"],
+  id = collect(1:10),
+  satisfaction = [2, 4, 5, 1, 3, 3, 3, 2, 4, 5],
+  need_achievement = [8, 3, 4, 7, 2, 9, 10, 5, 4, 6],
+  fav_color = ["red", "red", "green", "orange", "blue", "yellow", "purple", "orange", "silver", "blue"],
+  number_of_kids = [2, 3, 0, 0, 0, 0, 2, 1, 1, 0],
+  instrument = ["piano", "guitar", "none", "piano", "saxophone", "none", "none", "none", "none", "clarinet"],
+  team_id = vcat(
+                repeat(["awesome"], 5),
+                repeat(["best"], 5)
+                ),
+  dyad_id = vcat(
+                repeat(["v"], 2),
+                repeat(["w"], 2),
+                repeat(["x"], 2),
+                repeat(["y"], 2),
+                repeat(["z"], 2)
+                ),
+  dyad_trust =   [2, 2,
+                  5, 5,
+                  7, 7,
+                  8, 8,
+                  3, 3],
+  team_performance = [7, 7, 7, 7, 7,
+                        4, 4, 4, 4, 4],
+  nation = repeat(["united_states"], 10)
+
+)
+
+
+```
+
+## Structure
+
+Identify characteristics about the data.
+
+```julia
+names(df)
+size(df)
+describe(df)
+first(df)
+last(df)
+show(df, allrows = true, allcols = true)
+```
+
+
+
+## Columns
+
+Create new columns, one documenting that everyone speaks english and another representing each individual's favorite season.
+
+```julia
+# with base
+df[!, :language] = repeat(["english"], 10)
+
+# with data frames meta
+df = @linq df |>
+    transform(fav_season = vcat(
+                                repeat(["summer"], 5),
+                                repeat(["winter"], 5)
+    ))
+
+
+@pt df[:, [:team_performance, :language, :fav_season]]
+```
+
+Rename columns. Change "satisfaction" to "job_sat" and "nation" to "country."
+
+```julia
+rename!(df, :satisfaction => :job_sat)
+
+df = df |> @rename(:nation => :country) |> DataFrame
+
+@pt df[:, [:job_sat, :country]]
+```
+
+Reorder columns. Not easy to do unless you want to re-type every column name. Waiting for something like "df = df[, [:team.id, :country, rest.of.columns()]" but that doesn't exist yet.
+
+
+Pull out a single column, in one of many ways. The last implementation also demonstrates how to select columns.
+
+```julia
+id_vec1 = df.id
+
+id_vec2 = df[:, :id]
+
+id_vec3 = @linq df |>
+        select(:id)
+id_vec3 = Vector(id_vec3.id)
+```
+
+Create new columns. The first standardizes the job satisfaction scores, whereas the second adds the trust and performance columns together to create a new variable.
+
+```julia
+mean_jobsat = 2.5
+
+df = @linq df |>
+    transform(job_sat_standardized = :job_sat .- mean_jobsat)
+
+df = @linq df |>
+    transform(trust_plus_performance = :dyad_trust .+ :team_performance)
+
+
+@pt df[:, [:dyad_trust, :team_performance, :trust_plus_performance]]
+```
+
+Sort the data based on the values within a given column.
+
+```julia
+
+df = @linq df |>
+    orderby(:number_of_kids, :fav_color)
+
+@pt df[:, [:id, :team_id, :job_sat, :number_of_kids, :fav_color]]
+
+sort!(df, [order(:id), order(:team_id)])
+
+@pt df[:, [:id, :team_id, :job_sat, :number_of_kids, :fav_color]]
+```
+
+## Rows
+
+Filter the data according to values within rows.
+
+```julia
+# simple row commands
+
+@linq df |>
+    where(:job_sat .== 2)
+
+@linq df |>
+    where(:fav_color .== "red", :team_id .== "awesome")
+
+# specify which columns to keep
+
+df[df.job_sat .> 3, [:name, :id, :job_sat, :need_achievement]]
+
+@linq df |>
+    where(:job_sat .> 3) |>
+    select(:name, :id, :job_sat, :need_achievement)
+
+# multiple filtering commands
+
+df[(df.job_sat .> 3) .& (df.need_achievement .> 4), :]
+
+@linq df |>
+    where(:job_sat .> 3, :need_achievement .> 4)
+
+```
+
+Identify a row and column value, use it in a computation, then replace the original value with the new computed value.
+
+This seems archaic for a basic cheat sheet but I use this kind of script in almost every computational model that I create.
+
+
+```julia
+# filter to a row
+
+person_i_need = "josh"
+
+row_i_need = @linq df |>
+            where(:name .== person_i_need)
+
+# get josh's value of job satisfaction
+
+value_i_need = Vector(row_i_need.job_sat)[1]
+
+### don't do this
+### Vector(row_i_need.job_sat) - doing so will give you a vector
+
+# do something with his job sat value
+
+new_js = value_i_need + 10 * 4
+
+# put the new value back into the data
+
+df[ (df.name .== person_i_need) .& (df.team_id .== "awesome"), :job_sat] = new_js
+
+@pt df[:, [:name, :job_sat]]
+```
+
+Re-lable rows or create cutoffs. Similar to R's case_when() function.
+
+
+First example. Turn time points such as 1, 2, and 3 into character-labeled time points such as "affect1", "affect2", and "affect3." This seems odd but it's necessary for creating wide data later on.
+
+
+```julia
+
+# data frame
+
+affect_df = DataFrame(
+    person = [1,1,1,2,2,2,3,3,3],
+    time = [1,2,3,1,2,3,1,2,3],
+    affect = [3,4,2,5,3,2,4,3,2]
+)
+
+@pt affect_df
+
+
+# function specifying how the labels should change
+
+function convert_rows(val)
+    if val == 1
+        result = "affect1"
+    elseif val == 2
+        result = "affect2"
+    else
+        result = "affect3"
+    return(result)
+end
+end
+
+
+
+# use that function within a transform call to create a new column
+# use f.() syntax to vectorize
+
+affect_df = @linq affect_df |>
+            transform(label_time = convert_rows.(:time))
+
+
+@pt affect_df
+```
+
+Second example. Change character values into different character values.
+
+
+```julia
+# data
+
+labels_df = DataFrame(
+    labels = ["dog", "shoe", "barn", "door", "cash"]
+)
+
+# function specifying how the values should change
+
+function convert_labels(label)
+    if label == "dog"
+        result = "blue"
+    elseif label == "shoe"
+        result = "green"
+    elseif label == "barn"
+        result = "orange"
+    elseif label == "door"
+        result = "black"
+    elseif label == "cash"
+        result = "yellow"
+    return(result)
+end
+end
+
+# transform a column and use f.() syntax
+
+labels_df = @linq labels_df |>
+        transform(color_labels = convert_labels.(:labels))
+
+
+@pt labels_df
+```
+
+Third example. Create cutoffs with boolean logic.
+
+```julia
+# data
+
+intermediates_df = DataFrame(
+    person = [1,2,3,4,5,6,7,8],
+    score = [1,2,3,7,8,9,20,30]
+)
+
+# function specifying the cutoffs
+
+function create_limits(x)
+    if x < 5
+        result = "low"
+    elseif 5 < x < 10
+        result = "medium"
+    elseif x > 10
+        result = "high"
+    return(result)
+end
+end
+
+# transform a column and use f.() syntax
+
+intermediates_df = @linq intermediates_df |>
+            transform(cutoffs = create_limits.(:score))
+
+
+@pt intermediates_df
+```
+
+
+
+# Summary Calculations
+
+Calculate column means.
+
+```julia
+
+# mean of single column
+
+mean(df.need_achievement)
+
+# within each team, calculate the mean job satisfaction
+
+@linq df |>
+    groupby(:team_id) |>
+    based_on(mean_jobsat = mean(:job_sat))
+
+# within each dyad, calculate the mean and sd need for achievement
+
+@linq df |>
+    groupby(:dyad_id) |>
+    based_on(
+        mean_need_achievement = mean(:need_achievement),
+        sd_need_achievement = std(:need_achievement)
+    )
+
+
+```
+
+What if there is missing data?
+
+```julia
+
+missing_df = DataFrame(
+    team_id = ["team_a", "team_a", "team_a", "team_b", "team_b", "team_b"],
+    name = ["ted", "stewart", "jessie", "susan", "carie", "rachel"],
+    cohesion = [3,6,missing,7,8,missing]
+)
+
+@pt missing_df
+
+@linq missing_df |>
+    groupby(:team_id) |>
+    based_on(
+        mean_cohesion = mean(skipmissing(:cohesion)),
+        sd_cohesion = std(skipmissing(:cohesion))
+    )
+
+```
+
+What if the missing data is labeled as NaN?
+
+
+```julia
+
+missing_df_nan = DataFrame(
+        team_id = ["team_a", "team_a", "team_a", "team_b", "team_b", "team_b"],
+        name = ["ted", "stewart", "jessie", "susan", "carie", "rachel"],
+        cohesion = [3,6,NaN,7,8,NaN]
+    )
+
+@pt missing_df_nan
+
+
+nanmean(x) = mean(filter(!isnan,x))
+nansd(x) = std(filter(!isnan,x))
+
+@linq missing_df_nan |>
+        groupby(:team_id) |>
+        based_on(
+            mean_cohesion = nanmean(:cohesion),
+            sd_cohesion = nansd(:cohesion)
+        )
+
+```
+
+Keep in mind that missingness in `julia` should be labeled with `missing`, not `NaN`.
+
+
+
+## Merging
+
+Take data stored in a separate data set (`team_cohesion`) and merge it with the larger, full data (`full_data`).
+
+Left join retains only rows in the first df. For example, if "team_cohesion" had data on team 4 then it would not be included in the join that I show here.
+
+The key is specified with the `on` command.
+
+```julia
+
+full_data = DataFrame(
+    team_id = ["team_1", "team_2", "team_3", "team_1", "team_2", "team_3"],
+    person_id = [1,2,3,4,5,6],
+    openness = [6,7,8,5,6,7]
+)
+
+@pt full_data
+
+team_cohesion = DataFrame(
+    team_id = ["team_1", "team_2", "team_3"],
+    team_cohesion = [30,20,10]
+
+)
+
+@pt team_cohesion
+
+full_df = join(full_data, team_cohesion, on = :team_id, kind = :left)
+
+@pt full_df
+```
+
+
+
+
+## Wide & Long
+
+
+Take data in long form and make it wide. Doing so in `julia` is more cumbersome than the `reshape` command in R, especially if the goal of creating wide data is to run structural equations models.
+
+
+```julia
+
+# a long df
+
+
+long_df = DataFrame(
+    person_id = [1,1,1,
+                 2,2,2,
+                 3,3,3,
+                 4,4,4],
+    time = [1,2,3,
+            1,2,3,
+            1,2,3,
+            1,2,3],
+    affect = [2,3,1,
+              2,2,2,
+              1,3,1,
+              1,2,3],
+    esteem = [5,6,7,
+              6,6,6,
+              3,4,5,
+              4,8,9],
+    stable_measure = [5,5,5,
+                      7,7,7,
+                      3,3,3,
+                      2,2,2]
+)
+
+@pt long_df
+
+
+# create wide data with esteem as the "widen" variable
+
+print(
+
+unstack(long_df, :person_id, :time, :esteem)
+
+)
+
+# create wide data with affect as the "widen" variable
+
+print(
+
+unstack(long_df, :person_id, :time, :affect)
+
+)
+```
+
+So, there are two issues with reshaping in `julia`. First, I can't make affect and esteem the wide variables simultaneously.
+
+Second, the names of the columns become integers such as 1, 2, 3 and so they need to be relabeled.
+
+Here is how I would prepare the data for SEM.
+
+```julia
+
+wide_affect = unstack(long_df, [:person_id, :stable_measure], :time, :affect)
+rename!(wide_affect, "1" => "affect1", "2" => "affect2", "3" => "affect3")
+
+wide_esteem = unstack(long_df, [:person_id], :time, :esteem)
+rename!(wide_esteem, "1" => "esteem1", "2" => "esteem2", "3" => "esteem3")
+
+wide_df = join(wide_affect, wide_esteem, on = :person_id, kind = :left)
+```
+
+Disclaimer. I'm not saying that `julia` is incapable of unstacking multiple variables or that there is not a workaround (I just demonstrated one).
+
+I'm simply saying that the `reshape` command in R is currently more user-friendly for SEM.
+
+What about wide to long?
+
+```julia
+long_affect = stack(wide_affect, [:affect1, :affect2, :affect3])
+```
+
+## Input & Output
+
+Identify directory and adjust.
+
+```julia; eval = false
+
+# current directory
+
+pwd()
+
+# change directory
+
+cd("")
+
+# move up a level
+
+cd("../data")
+
+# if you know the file name but not the directory
+
+filename = "whatever_name.csv"
+filepath = joinpath(@__DIR__, filename)
+println(filepath)
+
+```
+
+Working with csv files, either with `CSV.jl` or `CSVFiles.jl`.
+
+```julia; eval = false
+
+# read csv
+
+df = CSV.File(file) |> DataFrame!
+
+# if the file contains data with no header
+
+CSV.File(file; header = false)
+
+# or to incorporate your own column names
+
+CSV.File(file; header = ["col1", "col2", "col3"])
+
+# if the csv has spaces in the header names
+# e.g., column names like "column one" will become "column_one"
+
+CSV.File(file; normalizenames=true)
+
+# if the csv has meta data within the first few rows that needs to be skipped
+
+CSV.File(file; datarow = 4)
+
+# if something like NA or 999 indicate missingness in csv
+
+CSV.File(file; missingstrings=["999", "NA"])
+
+# identify column types
+
+CSV.File(file; types =[Int, Int, String])
+
+
+# the csv package has many of the same commands
+## append two csvs
+
+df = CSV.read(file)
+df = CSV.read(file2, df; apppend=true)
+
+
+# write csvs
+## specify that missing values should be "NA"
+
+CSV.write("out.csv", df; null = "NA")
+
+```
+
+Identify all files within a folder.
+
+```julia; eval = false
+
+readdir([path])
+
+```
+
+## RCall
+
+Run R code within `julia`. I don't evaluate these commands to save space.
+
+```julia; eval = false
+
+# run R code
+
+R"""
+
+library(ggplot2)
+ggplot($df, aes(x = time, y = y)) +
+	geom_point()
+
+
+library(actuar)
+total <- 4 + 9
+power_law <- rpareto(1,2,3
+
+"""
+
+# pull objects from r environment to julia environment
+
+@rget total
+@rget power_law
+
+# put objects from julia environment into r environment
+
+jul_variable = 4
+
+@rput jul_variables
+
+R"""
+new_in_r <- jul_variable + 10
+"""
+
+@rget new_in_r
+
+```
+
+
+## Packages
+
+Add packages. In terminal, press `]` and then type `add` `package_name`. Do not include `.jl` after the package name.
+
+In a script, do below.
+
+```julia; eval = false
+
+Pkg.Add("RCall")
+
+# from github
+
+Pkg.cone("https://github.com/JuliaDiffEq/ParameterizedFunctions.jl")
+
+```
+
+
+## Vectors & Sampling
+
+Create vectors and arrays.
+
+```julia
+# vector of length n with all zeros
+
+n=10
+result_store = zeros(n)
+
+# undefined vector of length n
+
+Vector(undef, n)
+
+# array from 0 to 100 in steps of 10
+
+print(
+collect(0:10:100)
+)
+
+# array from 4 to 1 decreasing by 1
+
+print(
+collect(4:-1:1)
+)
+
+# array from 1 to 100 with 12 steps
+
+print(
+collect(range(1, stop = 100, length = 12))
+)
+
+# start at 1, add 3, do that 20 times or for 20 steps
+
+print(
+range(1, step = 3, length = 20) |> collect
+)
+
+
+```
+
+
+## Sampling and Distributions
+
+Create distributions and pull samples.
+
+```julia
+# set seed
+
+Random.seed!(4)
+
+# draw 100 random samples from a normal distribution with mean 1 and sd 2
+
+draw_values = rand(Normal(1,2), 100)
+
+# estimate parameters of empirical distribution draw_values
+
+fit(Normal, draw_values)
+
+# for any distribution (see distributions "continuous" documentation
+
+## abstract_distribution = Normal(parameter1, parameter2)
+## x = rand(abstract_distribution, 100)
+
+
+# multivariate normal with 2 variables, draw 5 values
+
+mu = [10.0; 20.1]
+covariance_matrix = [2.0 1.2; 1.2 3.5]
+d = MvNormal(mu, covariance_matrix)
+x = rand(d, 5)
+
+
+# random number from uniform between 0 and 1
+
+rand()
+
+# 5 random numbers drawn from a uniform betwen 0 and 1
+
+rand(5)
+
+# matrix of random numbers, 4 by 3
+
+rand(4,3)
+
+# random numbers from Uniform[0,100]
+
+rand()*100
+
+
+# randomly choose an index within a vector
+
+rand(1:10)
+
+# 2 random draws from Uniform[3:9]
+
+rand(3:9, 2)
+```
+
+
+
+
+
+## Miscillaneous
+
+Read a text file.
+
+```julia; eval = false
+
+datafilename = "data.txt"
+datafile = open(datafilename)
+data = readlines(datafile)
+close(datafile)
+```
