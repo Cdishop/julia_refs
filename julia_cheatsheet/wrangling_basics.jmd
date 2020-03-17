@@ -36,7 +36,8 @@ df = DataFrame(
                   3, 3],
   team_performance = [7, 7, 7, 7, 7,
                         4, 4, 4, 4, 4],
-  nation = repeat(["united_states"], 10)
+  nation = repeat(["united_states"], 10),
+  common_value = repeat([3], 10)
 
 )
 
@@ -304,6 +305,39 @@ intermediates_df = @linq intermediates_df |>
 @pt intermediates_df
 ```
 
+Fourth example: logic using multiple columns.
+
+```julia
+
+# data
+
+weather_df = DataFrame(
+    sun = [3,2,1,8,9,7],
+    clouds = [8,5,7,2,1,3],
+    day = [1,2,3,4,5,6]
+)
+
+# function specifying logic
+
+function determine_weather(col1, col2)
+    if col1 < col2
+        result = "cloudy"
+    elseif col1 > col2
+        result = "sunny"
+    elseif col1 == col2
+        result = "hazzy"
+    end
+end
+
+# transform the data using a create new column command and f.() syntax
+
+weather_df = @linq weather_df |>
+    transform(weather = determine_weather.(:sun, :clouds))
+
+@pt weather_df
+
+```
+
 
 
 # Summary Calculations
@@ -514,6 +548,10 @@ pwd()
 
 cd("")
 
+# change directory to wherever the opened file is located
+
+cd(dirname(@__FILE__))
+
 # move up a level
 
 cd("../data")
@@ -680,7 +718,19 @@ range(1, step = 3, length = 20) |> collect
 
 
 ```
+Count the number of "trues" in a vector. For this example, refer back to the weather data frame.
 
+```julia
+
+@pt weather_df
+
+# how many times is it sunny?
+
+days_sunny = count(i == "sunny" for i in weather_df.weather)
+
+print(days_sunny)
+
+```
 
 ## Sampling and Distributions
 
@@ -694,6 +744,10 @@ Random.seed!(4)
 # draw 100 random samples from a normal distribution with mean 1 and sd 2
 
 draw_values = rand(Normal(1,2), 100)
+
+# draw a single sample but retain it as an integer rather than an array
+
+draw_integer = rand(Normal(1,2), 1)[1]
 
 # estimate parameters of empirical distribution draw_values
 

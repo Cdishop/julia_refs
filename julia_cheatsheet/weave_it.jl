@@ -1,4 +1,5 @@
 using Weave
 
-cd("Desktop/julia_refs/julia_cheatsheet")
+cd(dirname(@__FILE__))
+
 weave("wrangling_basics.jmd")

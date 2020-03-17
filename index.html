@@ -694,14 +694,15 @@ div.title {text-align: center;}
                   </span><span class='hljl-ni'>3</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-p'>],</span><span class='hljl-t'>
   </span><span class='hljl-n'>team_performance</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-t'>
                         </span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>],</span><span class='hljl-t'>
-  </span><span class='hljl-n'>nation</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>repeat</span><span class='hljl-p'>([</span><span class='hljl-s'>&quot;united_states&quot;</span><span class='hljl-p'>],</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-p'>)</span><span class='hljl-t'>
+  </span><span class='hljl-n'>nation</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>repeat</span><span class='hljl-p'>([</span><span class='hljl-s'>&quot;united_states&quot;</span><span class='hljl-p'>],</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-p'>),</span><span class='hljl-t'>
+  </span><span class='hljl-n'>common_value</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>repeat</span><span class='hljl-p'>([</span><span class='hljl-ni'>3</span><span class='hljl-p'>],</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-p'>)</span><span class='hljl-t'>
 
 </span><span class='hljl-p'>)</span>
 </pre>
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>satisfaction</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>nation</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th></tr></thead><tbody><p>10 rows × 12 columns</p><tr><th>1</th><td>josh</td><td>1</td><td>2</td><td>8</td><td>red</td><td>2</td><td>piano</td><td>awesome</td><td>v</td><td>2</td><td>7</td><td>united_states</td></tr><tr><th>2</th><td>adam</td><td>2</td><td>4</td><td>3</td><td>red</td><td>3</td><td>guitar</td><td>awesome</td><td>v</td><td>2</td><td>7</td><td>united_states</td></tr><tr><th>3</th><td>jenny</td><td>3</td><td>5</td><td>4</td><td>green</td><td>0</td><td>none</td><td>awesome</td><td>w</td><td>5</td><td>7</td><td>united_states</td></tr><tr><th>4</th><td>rory</td><td>4</td><td>1</td><td>7</td><td>orange</td><td>0</td><td>piano</td><td>awesome</td><td>w</td><td>5</td><td>7</td><td>united_states</td></tr><tr><th>5</th><td>thomas</td><td>5</td><td>3</td><td>2</td><td>blue</td><td>0</td><td>saxophone</td><td>awesome</td><td>x</td><td>7</td><td>7</td><td>united_states</td></tr><tr><th>6</th><td>bill</td><td>6</td><td>3</td><td>9</td><td>yellow</td><td>0</td><td>none</td><td>best</td><td>x</td><td>7</td><td>4</td><td>united_states</td></tr><tr><th>7</th><td>sarah</td><td>7</td><td>3</td><td>10</td><td>purple</td><td>2</td><td>none</td><td>best</td><td>y</td><td>8</td><td>4</td><td>united_states</td></tr><tr><th>8</th><td>allie</td><td>8</td><td>2</td><td>5</td><td>orange</td><td>1</td><td>none</td><td>best</td><td>y</td><td>8</td><td>4</td><td>united_states</td></tr><tr><th>9</th><td>shannon</td><td>9</td><td>4</td><td>4</td><td>silver</td><td>1</td><td>none</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td></tr><tr><th>10</th><td>cloe</td><td>10</td><td>5</td><td>6</td><td>blue</td><td>0</td><td>clarinet</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>satisfaction</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>nation</th><th>common_value</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th></tr></thead><tbody><p>10 rows × 13 columns</p><tr><th>1</th><td>josh</td><td>1</td><td>2</td><td>8</td><td>red</td><td>2</td><td>piano</td><td>awesome</td><td>v</td><td>2</td><td>7</td><td>united_states</td><td>3</td></tr><tr><th>2</th><td>adam</td><td>2</td><td>4</td><td>3</td><td>red</td><td>3</td><td>guitar</td><td>awesome</td><td>v</td><td>2</td><td>7</td><td>united_states</td><td>3</td></tr><tr><th>3</th><td>jenny</td><td>3</td><td>5</td><td>4</td><td>green</td><td>0</td><td>none</td><td>awesome</td><td>w</td><td>5</td><td>7</td><td>united_states</td><td>3</td></tr><tr><th>4</th><td>rory</td><td>4</td><td>1</td><td>7</td><td>orange</td><td>0</td><td>piano</td><td>awesome</td><td>w</td><td>5</td><td>7</td><td>united_states</td><td>3</td></tr><tr><th>5</th><td>thomas</td><td>5</td><td>3</td><td>2</td><td>blue</td><td>0</td><td>saxophone</td><td>awesome</td><td>x</td><td>7</td><td>7</td><td>united_states</td><td>3</td></tr><tr><th>6</th><td>bill</td><td>6</td><td>3</td><td>9</td><td>yellow</td><td>0</td><td>none</td><td>best</td><td>x</td><td>7</td><td>4</td><td>united_states</td><td>3</td></tr><tr><th>7</th><td>sarah</td><td>7</td><td>3</td><td>10</td><td>purple</td><td>2</td><td>none</td><td>best</td><td>y</td><td>8</td><td>4</td><td>united_states</td><td>3</td></tr><tr><th>8</th><td>allie</td><td>8</td><td>2</td><td>5</td><td>orange</td><td>1</td><td>none</td><td>best</td><td>y</td><td>8</td><td>4</td><td>united_states</td><td>3</td></tr><tr><th>9</th><td>shannon</td><td>9</td><td>4</td><td>4</td><td>silver</td><td>1</td><td>none</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td><td>3</td></tr><tr><th>10</th><td>cloe</td><td>10</td><td>5</td><td>6</td><td>blue</td><td>0</td><td>clarinet</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td><td>3</td></tr></tbody></table>
 
 <h2>Structure</h2>
 <p>Identify characteristics about the data.</p>
@@ -718,7 +719,7 @@ div.title {text-align: center;}
 
 
 <pre class="output">
-10×12 DataFrames.DataFrame
+10×13 DataFrames.DataFrame
 │ Row │ name    │ id    │ satisfaction │ need_achievement │ fav_color │
 │     │ String  │ Int64 │ Int64        │ Int64            │ String    │
 ├─────┼─────────┼───────┼──────────────┼──────────────────┼───────────┤
@@ -747,19 +748,19 @@ div.title {text-align: center;}
 │ 9   │ 1              │ none       │ best    │ z       │ 3          │
 │ 10  │ 0              │ clarinet   │ best    │ z       │ 3          │
 
-│ Row │ team_performance │ nation        │
-│     │ Int64            │ String        │
-├─────┼──────────────────┼───────────────┤
-│ 1   │ 7                │ united_states │
-│ 2   │ 7                │ united_states │
-│ 3   │ 7                │ united_states │
-│ 4   │ 7                │ united_states │
-│ 5   │ 7                │ united_states │
-│ 6   │ 4                │ united_states │
-│ 7   │ 4                │ united_states │
-│ 8   │ 4                │ united_states │
-│ 9   │ 4                │ united_states │
-│ 10  │ 4                │ united_states │
+│ Row │ team_performance │ nation        │ common_value │
+│     │ Int64            │ String        │ Int64        │
+├─────┼──────────────────┼───────────────┼──────────────┤
+│ 1   │ 7                │ united_states │ 3            │
+│ 2   │ 7                │ united_states │ 3            │
+│ 3   │ 7                │ united_states │ 3            │
+│ 4   │ 7                │ united_states │ 3            │
+│ 5   │ 7                │ united_states │ 3            │
+│ 6   │ 4                │ united_states │ 3            │
+│ 7   │ 4                │ united_states │ 3            │
+│ 8   │ 4                │ united_states │ 3            │
+│ 9   │ 4                │ united_states │ 3            │
+│ 10  │ 4                │ united_states │ 3            │
 </pre>
 
 
@@ -987,7 +988,7 @@ div.title {text-align: center;}
 
 
 
-<table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>job_sat</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>country</th><th>language</th><th>fav_season</th><th>job_sat_standardized</th><th>trust_plus_performance</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Float64</th><th>Int64</th></tr></thead><tbody><p>1 rows × 16 columns</p><tr><th>1</th><td>cloe</td><td>10</td><td>5</td><td>6</td><td>blue</td><td>0</td><td>clarinet</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td><td>english</td><td>winter</td><td>2.5</td><td>7</td></tr></tbody></table>
+<table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>job_sat</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>country</th><th>common_value</th><th>language</th><th>fav_season</th><th>job_sat_standardized</th><th>trust_plus_performance</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>Float64</th><th>Int64</th></tr></thead><tbody><p>1 rows × 17 columns</p><tr><th>1</th><td>cloe</td><td>10</td><td>5</td><td>6</td><td>blue</td><td>0</td><td>clarinet</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td><td>3</td><td>english</td><td>winter</td><td>2.5</td><td>7</td></tr></tbody></table>
 
 <p>Identify a row and column value, use it in a computation, then replace the original value with the new computed value.</p>
 <p>This seems archaic for a basic cheat sheet but I use this kind of script in almost every computational model that I create.</p>
@@ -1219,6 +1220,54 @@ div.title {text-align: center;}
 │      7 │    20 │    high │
 │      8 │    30 │    high │
 └────────┴───────┴─────────┘
+</pre>
+
+
+<p>Fourth example: logic using multiple columns.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-cs'># data</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>weather_df</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>DataFrame</span><span class='hljl-p'>(</span><span class='hljl-t'>
+    </span><span class='hljl-n'>sun</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-ni'>3</span><span class='hljl-p'>,</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-ni'>8</span><span class='hljl-p'>,</span><span class='hljl-ni'>9</span><span class='hljl-p'>,</span><span class='hljl-ni'>7</span><span class='hljl-p'>],</span><span class='hljl-t'>
+    </span><span class='hljl-n'>clouds</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-ni'>8</span><span class='hljl-p'>,</span><span class='hljl-ni'>5</span><span class='hljl-p'>,</span><span class='hljl-ni'>7</span><span class='hljl-p'>,</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-ni'>3</span><span class='hljl-p'>],</span><span class='hljl-t'>
+    </span><span class='hljl-n'>day</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-ni'>3</span><span class='hljl-p'>,</span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-ni'>5</span><span class='hljl-p'>,</span><span class='hljl-ni'>6</span><span class='hljl-p'>]</span><span class='hljl-t'>
+</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># function specifying logic</span><span class='hljl-t'>
+
+</span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>determine_weather</span><span class='hljl-p'>(</span><span class='hljl-n'>col1</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>col2</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-k'>if</span><span class='hljl-t'> </span><span class='hljl-n'>col1</span><span class='hljl-t'> </span><span class='hljl-oB'>&lt;</span><span class='hljl-t'> </span><span class='hljl-n'>col2</span><span class='hljl-t'>
+        </span><span class='hljl-n'>result</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;cloudy&quot;</span><span class='hljl-t'>
+    </span><span class='hljl-k'>elseif</span><span class='hljl-t'> </span><span class='hljl-n'>col1</span><span class='hljl-t'> </span><span class='hljl-oB'>&gt;</span><span class='hljl-t'> </span><span class='hljl-n'>col2</span><span class='hljl-t'>
+        </span><span class='hljl-n'>result</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;sunny&quot;</span><span class='hljl-t'>
+    </span><span class='hljl-k'>elseif</span><span class='hljl-t'> </span><span class='hljl-n'>col1</span><span class='hljl-t'> </span><span class='hljl-oB'>==</span><span class='hljl-t'> </span><span class='hljl-n'>col2</span><span class='hljl-t'>
+        </span><span class='hljl-n'>result</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;hazzy&quot;</span><span class='hljl-t'>
+    </span><span class='hljl-k'>end</span><span class='hljl-t'>
+</span><span class='hljl-k'>end</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># transform the data using a create new column command and f.() syntax</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>weather_df</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nd'>@linq</span><span class='hljl-t'> </span><span class='hljl-n'>weather_df</span><span class='hljl-t'> </span><span class='hljl-oB'>|&gt;</span><span class='hljl-t'>
+    </span><span class='hljl-nf'>transform</span><span class='hljl-p'>(</span><span class='hljl-n'>weather</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>determine_weather</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-sc'>:sun</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-sc'>:clouds</span><span class='hljl-p'>))</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@pt</span><span class='hljl-t'> </span><span class='hljl-n'>weather_df</span>
+</pre>
+
+
+<pre class="output">
+┌───────┬────────┬───────┬─────────┐
+│   sun │ clouds │   day │ weather │
+│ Int64 │  Int64 │ Int64 │  String │
+├───────┼────────┼───────┼─────────┤
+│     3 │      8 │     1 │  cloudy │
+│     2 │      5 │     2 │  cloudy │
+│     1 │      7 │     3 │  cloudy │
+│     8 │      2 │     4 │   sunny │
+│     9 │      1 │     5 │   sunny │
+│     7 │      3 │     6 │   sunny │
+└───────┴────────┴───────┴─────────┘
 </pre>
 
 
@@ -1570,6 +1619,10 @@ div.title {text-align: center;}
 
 </span><span class='hljl-nf'>cd</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;&quot;</span><span class='hljl-p'>)</span><span class='hljl-t'>
 
+</span><span class='hljl-cs'># change directory to wherever the opened file is located</span><span class='hljl-t'>
+
+</span><span class='hljl-nf'>cd</span><span class='hljl-p'>(</span><span class='hljl-nf'>dirname</span><span class='hljl-p'>(</span><span class='hljl-nd'>@__FILE__</span><span class='hljl-p'>))</span><span class='hljl-t'>
+
 </span><span class='hljl-cs'># move up a level</span><span class='hljl-t'>
 
 </span><span class='hljl-nf'>cd</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;../data&quot;</span><span class='hljl-p'>)</span><span class='hljl-t'>
@@ -1768,6 +1821,44 @@ new_in_r &lt;- jul_variable + 10
 </pre>
 
 
+<p>Count the number of &quot;trues&quot; in a vector. For this example, refer back to the weather data frame.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-nd'>@pt</span><span class='hljl-t'> </span><span class='hljl-n'>weather_df</span>
+</pre>
+
+
+<pre class="output">
+┌───────┬────────┬───────┬─────────┐
+│   sun │ clouds │   day │ weather │
+│ Int64 │  Int64 │ Int64 │  String │
+├───────┼────────┼───────┼─────────┤
+│     3 │      8 │     1 │  cloudy │
+│     2 │      5 │     2 │  cloudy │
+│     1 │      7 │     3 │  cloudy │
+│     8 │      2 │     4 │   sunny │
+│     9 │      1 │     5 │   sunny │
+│     7 │      3 │     6 │   sunny │
+└───────┴────────┴───────┴─────────┘
+</pre>
+
+
+
+<pre class='hljl'>
+<span class='hljl-cs'># how many times is it sunny?</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>days_sunny</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>count</span><span class='hljl-p'>(</span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>==</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;sunny&quot;</span><span class='hljl-t'> </span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-kp'>in</span><span class='hljl-t'> </span><span class='hljl-n'>weather_df</span><span class='hljl-oB'>.</span><span class='hljl-n'>weather</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nf'>print</span><span class='hljl-p'>(</span><span class='hljl-n'>days_sunny</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+3
+</pre>
+
+
 <h2>Sampling and Distributions</h2>
 <p>Create distributions and pull samples.</p>
 
@@ -1780,6 +1871,10 @@ new_in_r &lt;- jul_variable + 10
 </span><span class='hljl-cs'># draw 100 random samples from a normal distribution with mean 1 and sd 2</span><span class='hljl-t'>
 
 </span><span class='hljl-n'>draw_values</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>rand</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-ni'>2</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-ni'>100</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># draw a single sample but retain it as an integer rather than an array</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>draw_integer</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>rand</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-ni'>2</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-p'>)[</span><span class='hljl-ni'>1</span><span class='hljl-p'>]</span><span class='hljl-t'>
 
 </span><span class='hljl-cs'># estimate parameters of empirical distribution draw_values</span><span class='hljl-t'>
 
@@ -1828,8 +1923,8 @@ new_in_r &lt;- jul_variable + 10
 
 <pre class="output">
 2-element Array&#123;Int64,1&#125;:
- 9
- 9
+ 3
+ 3
 </pre>
 
 
@@ -1852,7 +1947,7 @@ new_in_r &lt;- jul_variable + 10
           <div class="footer"><p>
           Published from <a href="wrangling_basics.jmd">wrangling_basics.jmd</a> using
           <a href="http://github.com/mpastell/Weave.jl">Weave.jl</a>
-           on 2020-02-09.
+           on 2020-03-17.
           <p></div>
 
 
