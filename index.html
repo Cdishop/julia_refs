@@ -864,6 +864,41 @@ div.title {text-align: center;}
 </pre>
 
 
+<p>Randomly select columns.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>num_cols</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-t'>
+</span><span class='hljl-n'>possible_values</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>collect</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-ni'>10</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>use_cols</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>sample</span><span class='hljl-p'>(</span><span class='hljl-n'>possible_values</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>num_cols</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>replace</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-kc'>false</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>rand_df</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nd'>@linq</span><span class='hljl-t'> </span><span class='hljl-n'>df</span><span class='hljl-t'> </span><span class='hljl-oB'>|&gt;</span><span class='hljl-t'>
+        </span><span class='hljl-nf'>select</span><span class='hljl-p'>(</span><span class='hljl-n'>use_cols</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@pt</span><span class='hljl-t'> </span><span class='hljl-n'>rand_df</span>
+</pre>
+
+
+<pre class="output">
+┌─────────┬────────────┬──────────────────┬────────────────┐
+│    name │ instrument │ need_achievement │ number_of_kids │
+│  String │     String │            Int64 │          Int64 │
+├─────────┼────────────┼──────────────────┼────────────────┤
+│    josh │      piano │                8 │              2 │
+│    adam │     guitar │                3 │              3 │
+│   jenny │       none │                4 │              0 │
+│    rory │      piano │                7 │              0 │
+│  thomas │  saxophone │                2 │              0 │
+│    bill │       none │                9 │              0 │
+│   sarah │       none │               10 │              2 │
+│   allie │       none │                5 │              1 │
+│ shannon │       none │                4 │              1 │
+│    cloe │   clarinet │                6 │              0 │
+└─────────┴────────────┴──────────────────┴────────────────┘
+</pre>
+
+
 <p>Create new columns. The first standardizes the job satisfaction scores, whereas the second adds the trust and performance columns together to create a new variable.</p>
 
 
@@ -989,6 +1024,28 @@ div.title {text-align: center;}
 
 
 <table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>job_sat</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>country</th><th>common_value</th><th>language</th><th>fav_season</th><th>job_sat_standardized</th><th>trust_plus_performance</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>Float64</th><th>Int64</th></tr></thead><tbody><p>1 rows × 17 columns</p><tr><th>1</th><td>cloe</td><td>10</td><td>5</td><td>6</td><td>blue</td><td>0</td><td>clarinet</td><td>best</td><td>z</td><td>3</td><td>4</td><td>united_states</td><td>3</td><td>english</td><td>winter</td><td>2.5</td><td>7</td></tr></tbody></table>
+
+<p>Obtain a subset of rows. Similar to R&#39;s &quot;&#37;in&#37;&quot; function.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>use_people</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-s'>&quot;josh&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;rory&quot;</span><span class='hljl-p'>]</span><span class='hljl-t'>
+</span><span class='hljl-n'>small_df</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>df</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># using DataFramesMeta</span><span class='hljl-t'>
+</span><span class='hljl-nd'>@linq</span><span class='hljl-t'> </span><span class='hljl-n'>df</span><span class='hljl-t'> </span><span class='hljl-oB'>|&gt;</span><span class='hljl-t'>
+    </span><span class='hljl-nf'>where</span><span class='hljl-p'>(</span><span class='hljl-sc'>:name</span><span class='hljl-t'> </span><span class='hljl-oB'>.∈</span><span class='hljl-t'> </span><span class='hljl-nf'>Ref</span><span class='hljl-p'>(</span><span class='hljl-n'>use_people</span><span class='hljl-p'>))</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># using Base</span><span class='hljl-t'>
+</span><span class='hljl-n'>small_df</span><span class='hljl-p'>[</span><span class='hljl-nf'>findall</span><span class='hljl-p'>(</span><span class='hljl-kp'>in</span><span class='hljl-p'>(</span><span class='hljl-n'>use_people</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-n'>small_df</span><span class='hljl-p'>[</span><span class='hljl-sc'>:name</span><span class='hljl-p'>]),</span><span class='hljl-t'> </span><span class='hljl-oB'>:</span><span class='hljl-p'>]</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># a third option...</span><span class='hljl-t'>
+</span><span class='hljl-nf'>filter</span><span class='hljl-p'>(</span><span class='hljl-n'>small_df</span><span class='hljl-t'> </span><span class='hljl-oB'>-&gt;</span><span class='hljl-t'> </span><span class='hljl-nf'>any</span><span class='hljl-p'>(</span><span class='hljl-n'>occursin</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-n'>use_people</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>small_df</span><span class='hljl-oB'>.</span><span class='hljl-n'>name</span><span class='hljl-p'>)),</span><span class='hljl-t'> </span><span class='hljl-n'>small_df</span><span class='hljl-p'>)</span>
+</pre>
+
+
+
+<table class="data-frame"><thead><tr><th></th><th>name</th><th>id</th><th>job_sat</th><th>need_achievement</th><th>fav_color</th><th>number_of_kids</th><th>instrument</th><th>team_id</th><th>dyad_id</th><th>dyad_trust</th><th>team_performance</th><th>country</th><th>common_value</th><th>language</th><th>fav_season</th><th>job_sat_standardized</th><th>trust_plus_performance</th></tr><tr><th></th><th>String</th><th>Int64</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>String</th><th>Int64</th><th>Int64</th><th>String</th><th>Int64</th><th>String</th><th>String</th><th>Float64</th><th>Int64</th></tr></thead><tbody><p>2 rows × 17 columns</p><tr><th>1</th><td>josh</td><td>1</td><td>2</td><td>8</td><td>red</td><td>2</td><td>piano</td><td>awesome</td><td>v</td><td>2</td><td>7</td><td>united_states</td><td>3</td><td>english</td><td>summer</td><td>-0.5</td><td>9</td></tr><tr><th>2</th><td>rory</td><td>4</td><td>1</td><td>7</td><td>orange</td><td>0</td><td>piano</td><td>awesome</td><td>w</td><td>5</td><td>7</td><td>united_states</td><td>3</td><td>english</td><td>summer</td><td>-1.5</td><td>12</td></tr></tbody></table>
 
 <p>Identify a row and column value, use it in a computation, then replace the original value with the new computed value.</p>
 <p>This seems archaic for a basic cheat sheet but I use this kind of script in almost every computational model that I create.</p>
@@ -1947,7 +2004,7 @@ new_in_r &lt;- jul_variable + 10
           <div class="footer"><p>
           Published from <a href="wrangling_basics.jmd">wrangling_basics.jmd</a> using
           <a href="http://github.com/mpastell/Weave.jl">Weave.jl</a>
-           on 2020-03-17.
+           on 2020-03-29.
           <p></div>
 
 

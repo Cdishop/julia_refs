@@ -103,6 +103,21 @@ id_vec3 = @linq df |>
 id_vec3 = Vector(id_vec3.id)
 ```
 
+Randomly select columns.
+
+```julia
+num_cols = 4
+possible_values = collect(1:1:10)
+
+use_cols = sample(possible_values, num_cols, replace = false)
+
+rand_df = @linq df |>
+        select(use_cols)
+
+@pt rand_df
+
+```
+
 Create new columns. The first standardizes the job satisfaction scores, whereas the second adds the trust and performance columns together to create a new variable.
 
 ```julia
@@ -161,6 +176,25 @@ df[(df.job_sat .> 3) .& (df.need_achievement .> 4), :]
     where(:job_sat .> 3, :need_achievement .> 4)
 
 ```
+Obtain a subset of rows. Similar to R's "%in%" function.
+
+```julia
+
+use_people = ["josh", "rory"]
+small_df = df
+
+# using DataFramesMeta
+@linq df |>
+    where(:name .∈ Ref(use_people))
+
+# using Base
+small_df[findall(in(use_people), small_df[:name]), :]
+
+# a third option...
+filter(small_df -> any(occursin.(use_people, small_df.name)), small_df)
+
+```
+
 
 Identify a row and column value, use it in a computation, then replace the original value with the new computed value.
 
