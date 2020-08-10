@@ -1,3 +1,13 @@
+# statistics and intro programming course
+
+https://statisticswithjulia.org/StatisticsWithJuliaDRAFT.pdf
+Yoni Nazarathy, Hayden Klok
+
+# package compiler
+
+https://github.com/JuliaLang/PackageCompiler.jl
+
+
 # excellent all around
 
 https://en.wikibooks.org/wiki/Introducing_Julia/Arrays_and_tuples
