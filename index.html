@@ -881,21 +881,21 @@ div.title {text-align: center;}
 
 
 <pre class="output">
-┌─────────┬────────────┬──────────────────┬────────────────┐
-│    name │ instrument │ need_achievement │ number_of_kids │
-│  String │     String │            Int64 │          Int64 │
-├─────────┼────────────┼──────────────────┼────────────────┤
-│    josh │      piano │                8 │              2 │
-│    adam │     guitar │                3 │              3 │
-│   jenny │       none │                4 │              0 │
-│    rory │      piano │                7 │              0 │
-│  thomas │  saxophone │                2 │              0 │
-│    bill │       none │                9 │              0 │
-│   sarah │       none │               10 │              2 │
-│   allie │       none │                5 │              1 │
-│ shannon │       none │                4 │              1 │
-│    cloe │   clarinet │                6 │              0 │
-└─────────┴────────────┴──────────────────┴────────────────┘
+┌─────────┬──────────────────┬─────────┬─────────┐
+│ team_id │ need_achievement │    name │ job_sat │
+│  String │            Int64 │  String │   Int64 │
+├─────────┼──────────────────┼─────────┼─────────┤
+│ awesome │                8 │    josh │       2 │
+│ awesome │                3 │    adam │       4 │
+│ awesome │                4 │   jenny │       5 │
+│ awesome │                7 │    rory │       1 │
+│ awesome │                2 │  thomas │       3 │
+│    best │                9 │    bill │       3 │
+│    best │               10 │   sarah │       3 │
+│    best │                5 │   allie │       2 │
+│    best │                4 │ shannon │       4 │
+│    best │                6 │    cloe │       5 │
+└─────────┴──────────────────┴─────────┴─────────┘
 </pre>
 
 
@@ -1328,7 +1328,161 @@ div.title {text-align: center;}
 </pre>
 
 
-<h1>Summary Calculations</h1>
+<h2>Initialize Storage Vectors</h2>
+<p>Using the &quot;zeros&quot; command seems to be the safest approach in Julia. I haven&#39;t yet learned how to use &quot;Vector&#123;Int&#125;&#40;undef, 10&#41;&quot; commands.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>periods</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-t'>
+</span><span class='hljl-n'>scores</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>zeros</span><span class='hljl-p'>(</span><span class='hljl-n'>periods</span><span class='hljl-p'>)</span><span class='hljl-t'>
+</span><span class='hljl-n'>dm</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>DataFrame</span><span class='hljl-p'>(</span><span class='hljl-t'>
+    </span><span class='hljl-n'>performance</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>zeros</span><span class='hljl-p'>(</span><span class='hljl-n'>periods</span><span class='hljl-p'>),</span><span class='hljl-t'>
+    </span><span class='hljl-n'>satisfaction</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>zeros</span><span class='hljl-p'>(</span><span class='hljl-n'>periods</span><span class='hljl-p'>)</span><span class='hljl-t'>
+</span><span class='hljl-p'>)</span>
+</pre>
+
+
+
+<table class="data-frame"><thead><tr><th></th><th>performance</th><th>satisfaction</th></tr><tr><th></th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>10 rows × 2 columns</p><tr><th>1</th><td>0.0</td><td>0.0</td></tr><tr><th>2</th><td>0.0</td><td>0.0</td></tr><tr><th>3</th><td>0.0</td><td>0.0</td></tr><tr><th>4</th><td>0.0</td><td>0.0</td></tr><tr><th>5</th><td>0.0</td><td>0.0</td></tr><tr><th>6</th><td>0.0</td><td>0.0</td></tr><tr><th>7</th><td>0.0</td><td>0.0</td></tr><tr><th>8</th><td>0.0</td><td>0.0</td></tr><tr><th>9</th><td>0.0</td><td>0.0</td></tr><tr><th>10</th><td>0.0</td><td>0.0</td></tr></tbody></table>
+
+<h2>Build Data Frame Iteratively</h2>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>time</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>20</span><span class='hljl-t'>
+
+
+</span><span class='hljl-cs'># example 1: append an entire data frame to an empty df</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>dfzz</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>DataFrame</span><span class='hljl-p'>(</span><span class='hljl-t'>
+    </span><span class='hljl-n'>group_p</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>Float64</span><span class='hljl-p'>[],</span><span class='hljl-t'>
+    </span><span class='hljl-n'>performance</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>Float64</span><span class='hljl-p'>[]</span><span class='hljl-t'>
+</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+
+
+</span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-kp'>in</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>time</span><span class='hljl-t'>
+
+    </span><span class='hljl-nf'>append!</span><span class='hljl-p'>(</span><span class='hljl-n'>dfzz</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nf'>DataFrame</span><span class='hljl-p'>(</span><span class='hljl-t'>
+    </span><span class='hljl-n'>group_p</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-p'>,</span><span class='hljl-t'>
+    </span><span class='hljl-n'>performance</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>-</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-t'>
+    </span><span class='hljl-p'>))</span><span class='hljl-t'>
+
+</span><span class='hljl-k'>end</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@pt</span><span class='hljl-t'> </span><span class='hljl-n'>dfzz</span>
+</pre>
+
+
+<pre class="output">
+┌─────────┬─────────────┐
+│ group_p │ performance │
+│ Float64 │     Float64 │
+├─────────┼─────────────┤
+│     4.0 │        -2.0 │
+│     5.0 │        -1.0 │
+│     6.0 │         0.0 │
+│     7.0 │         1.0 │
+│     8.0 │         2.0 │
+│     9.0 │         3.0 │
+│    10.0 │         4.0 │
+│    11.0 │         5.0 │
+│    12.0 │         6.0 │
+│    13.0 │         7.0 │
+│    14.0 │         8.0 │
+│    15.0 │         9.0 │
+│    16.0 │        10.0 │
+│    17.0 │        11.0 │
+│    18.0 │        12.0 │
+│    19.0 │        13.0 │
+│    20.0 │        14.0 │
+│    21.0 │        15.0 │
+│    22.0 │        16.0 │
+│    23.0 │        17.0 │
+└─────────┴─────────────┘
+</pre>
+
+
+
+<pre class='hljl'>
+<span class='hljl-cs'># example 2: add to an initialized df</span><span class='hljl-t'>
+
+</span><span class='hljl-n'>dfyy</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>DataFrame</span><span class='hljl-p'>(</span><span class='hljl-t'>
+    </span><span class='hljl-n'>group_p</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>repeat</span><span class='hljl-p'>([</span><span class='hljl-ni'>0</span><span class='hljl-p'>],</span><span class='hljl-t'> </span><span class='hljl-nf'>length</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>time</span><span class='hljl-p'>)),</span><span class='hljl-t'>
+    </span><span class='hljl-n'>performance</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>repeat</span><span class='hljl-p'>([</span><span class='hljl-ni'>0</span><span class='hljl-p'>],</span><span class='hljl-t'> </span><span class='hljl-nf'>length</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>time</span><span class='hljl-p'>))</span><span class='hljl-t'>
+</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+
+
+</span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-kp'>in</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>time</span><span class='hljl-t'>
+
+    </span><span class='hljl-n'>dfyy</span><span class='hljl-p'>[</span><span class='hljl-n'>i</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-sc'>:group_p</span><span class='hljl-p'>]</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-t'>
+    </span><span class='hljl-n'>dfyy</span><span class='hljl-p'>[</span><span class='hljl-n'>i</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-sc'>:performance</span><span class='hljl-p'>]</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>-</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-t'>
+
+</span><span class='hljl-k'>end</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@pt</span><span class='hljl-t'> </span><span class='hljl-n'>dfyy</span>
+</pre>
+
+
+<pre class="output">
+┌─────────┬─────────────┐
+│ group_p │ performance │
+│   Int64 │       Int64 │
+├─────────┼─────────────┤
+│       3 │          -2 │
+│       4 │          -1 │
+│       5 │           0 │
+│       6 │           1 │
+│       7 │           2 │
+│       8 │           3 │
+│       9 │           4 │
+│      10 │           5 │
+│      11 │           6 │
+│      12 │           7 │
+│      13 │           8 │
+│      14 │           9 │
+│      15 │          10 │
+│      16 │          11 │
+│      17 │          12 │
+│      18 │          13 │
+│      19 │          14 │
+│      20 │          15 │
+│      21 │          16 │
+│      22 │          17 │
+└─────────┴─────────────┘
+</pre>
+
+
+<h2>Element-Wise Functions</h2>
+<p>Use dot notation to apply a function to every value in a vector.</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>vec1</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-ni'>0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>5</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>6</span><span class='hljl-p'>]</span><span class='hljl-t'>
+
+</span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>addtwo</span><span class='hljl-p'>(</span><span class='hljl-n'>x</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>y</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>x</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-t'>
+    </span><span class='hljl-k'>return</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
+</span><span class='hljl-k'>end</span><span class='hljl-t'>
+
+</span><span class='hljl-cs'># don&#39;t use addtwo(vec1)</span><span class='hljl-t'>
+</span><span class='hljl-cs'># use addtwo.(vec1)</span><span class='hljl-t'>
+</span><span class='hljl-n'>addtwo</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-n'>vec1</span><span class='hljl-p'>)</span>
+</pre>
+
+
+<pre class="output">
+5-element Array&#123;Int64,1&#125;:
+ 2
+ 5
+ 6
+ 7
+ 8
+</pre>
+
+
+<h2>Summary Calculations</h2>
 <p>Calculate column means.</p>
 
 
@@ -2004,7 +2158,7 @@ new_in_r &lt;- jul_variable + 10
           <div class="footer"><p>
           Published from <a href="wrangling_basics.jmd">wrangling_basics.jmd</a> using
           <a href="http://github.com/mpastell/Weave.jl">Weave.jl</a>
-           on 2020-03-29.
+           on 2021-01-03.
           <p></div>
 
 

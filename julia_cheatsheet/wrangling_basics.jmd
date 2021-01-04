@@ -372,9 +372,91 @@ weather_df = @linq weather_df |>
 
 ```
 
+## Initialize Storage Vectors
+
+Using the "zeros" command seems to be the safest approach in Julia. I haven't yet learned how to use "Vector{Int}(undef, 10)" commands.
+
+```julia
+periods = 10
+scores = zeros(periods)
+dm = DataFrame(
+    performance = zeros(periods),
+    satisfaction = zeros(periods)
+)
+
+```
+
+## Build Data Frame Iteratively
+
+```julia
+
+time = 20
 
 
-# Summary Calculations
+# example 1: append an entire data frame to an empty df
+
+dfzz = DataFrame(
+    group_p = Float64[],
+    performance = Float64[]
+)
+
+
+
+for i in 1:time
+
+    append!(dfzz, DataFrame(
+    group_p = i + 3,
+    performance = i - 3
+    ))
+
+end
+
+@pt dfzz
+
+
+# example 2: add to an initialized df
+
+dfyy = DataFrame(
+    group_p = repeat([0], length(1:time)),
+    performance = repeat([0], length(1:time))
+)
+
+
+
+for i in 1:time
+
+    dfyy[i, :group_p] = i + 2
+    dfyy[i, :performance] = i - 3
+
+end
+
+@pt dfyy
+
+
+
+```
+
+## Element-Wise Functions
+
+Use dot notation to apply a function to every value in a vector.
+
+```julia
+vec1 = [0, 3, 4, 5, 6]
+
+function addtwo(x)
+    y = x + 2
+    return(y)
+end
+
+# don't use addtwo(vec1)
+# use addtwo.(vec1)
+addtwo.(vec1)
+
+```
+
+
+
+## Summary Calculations
 
 Calculate column means.
 
